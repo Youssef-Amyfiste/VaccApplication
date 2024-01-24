@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Centre Vaccination</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        section {
+            background-image: url("/images/vacc5.jpg");
+            background-repeat: no-repeat;
+            background-size: cover; /* Ajuste la taille de l'image pour couvrir toute la section */
+            background-position: center; /* Centre l'image horizontalement et verticalement */
+            min-height: 91vh; /* Ajuste la hauteur minimale de la section pour remplir l'écran */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="navbar :: navbar"></div>
+<section>
+<div class="card text-center mt-5 bg-transparent">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active bg-transparent text-white font-weight-bold ml-2" aria-current="true" href="/api/centreVaccination/addCitoyen">Affecter un citoyen au centre de vaccination</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <form  action="#" th:action="@{/api/centreVaccination/saveCitoyen}" th:object="${citoyen}"
+              method="post">
+            <div class="mb-3">
+                <input type="text" th:field="*{id}" placeholder="Le nom complet de citoyen " class="form-control " id="exampleInputEmail1" hidden="">
+            </div>
+            <div class="mb-3">
+                <input type="text" th:field="*{nom}" placeholder="Le nom complet de citoyen . . ." class="form-control bg-transparent text-white" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3 row">
+                <label class="form-label col-md-5">Choisir le centre de vaccination</label>
+                <select class="form-select col-md-5 offset-1" aria-label="Default select example" th:field="*{centreVaccination.id}">
+                    <option th:each="cv : ${centreVaccinations}" th:value="${cv.id}" th:text="${cv.nom}"/>
+                </select>
+
+
+            </div>
+            <button type="submit" class="btn btn-primary">Editer</button>
+        </form>
+    </div>
+</div>
+<div class="card-body col-md-8">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Identifiant</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Centre de vaccination</th>
+            <th scope="col">Action</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c: ${citoyens}">
+            <td th:text="${c.id}" />
+            <td th:text="${c.nom}" />
+            <td th:text="${c.centreVaccination.nom}" />
+            <td><a th:href="@{'/api/centreVaccination/editCitoyen/' + ${c.id}}">Modifier</a></td>
+            <td><a th:href="@{'/api/centreVaccination/deleteCitoyen/' + ${c.id}}">Supprimer</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+</body>
+</html>

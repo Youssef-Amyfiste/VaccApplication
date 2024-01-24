@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Centre Vaccination</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        section {
+            background-image: url("/images/vacc5.jpg");
+            background-repeat: no-repeat;
+            background-size: cover; /* Ajuste la taille de l'image pour couvrir toute la section */
+            background-position: center; /* Centre l'image horizontalement et verticalement */
+            min-height: 91vh; /* Ajuste la hauteur minimale de la section pour remplir l'écran */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="navbar :: navbar"></div>
+<section>
+<div class="card text-center mt-5 bg-transparent">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active bg-transparent text-white font-weight-bold" aria-current="true" href="/api/centreVaccination/addVaccCenter">Ajouter un centre de vaccination</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-transparent" href="/api/centreVaccination/centreVaccination">Consulter les citoyens d'un centre de vaccination</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <form class="col-md-6 offset-3" action="#" th:action="@{/api/centreVaccination/save}" th:object="${centreVaccination}"
+              method="post">
+            <div class="mb-3">
+                <input type="text" th:field="*{nom}" placeholder="Saisir le nom de centre . . . " class="form-control bg-transparent text-white" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3">
+                <input type="text" th:field="*{adresse}" placeholder="Saisir l'adresse de centre . . ." class="form-control bg-transparent text-white" id="exampleInputEmail2" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+</div>
+<div class="card-body col-md-8">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Identifiant</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Adresse</th>
+            <th scope="col">Action</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cv: ${centreVaccinations}">
+            <td th:text="${cv.id}" />
+            <td th:text="${cv.nom}" />
+            <td th:text="${cv.adresse}" />
+            <td class="text-dark"><a th:href="@{'/api/centreVaccination/editVaccCenter/' + ${cv.id}}">Modifier</a></td>
+            <td class="text-danger"><a th:href="@{'/api/centreVaccination/deleteVaccCenter/' + ${cv.id}}">Supprimer</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+</body>
+</html>
